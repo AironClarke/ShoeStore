@@ -1,0 +1,88 @@
+* {
+    box-sizing: border-box;
+}
+
+.carouselFeature{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    /* justify-content: space-between; */
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+}
+
+.carouselFeatureImg{
+    width: 50vw;
+    overflow: hidden
+}
+
+.carouselContent{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+    max-height: 52rem;
+    overflow: hidden;
+    padding: 0 calc(4% + .75rem);
+    width: 50%;
+}
+
+.carouselContentHeader{
+    align-items: flex-end;
+    display: flex;
+    justify-content: space-between;
+}
+
+.carouselH3{
+    font-size: 4rem;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 1.1;
+    max-width: 20rem;
+    margin: 0;
+}
+
+.circle{
+    background-color: black;
+    border-radius: 50%;
+    height: 4rem;
+    width: 4rem;
+}
+
+.carouselReel{
+    align-items: center;
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.carouselReelScreen{
+    overflow: visable;
+    display: flex;
+    margin: 2rem 0;
+    width: 100%;
+}
+
+.swiper{
+    display: flex;
+    height: 100%;
+    position: relative;
+    transition-property: transform;
+    z-index: 1;
+    cursor: grab;
+    transform: translate3d(0px, 0px, 0px);
+    transition-duration: 0ms;
+}
+
+.card{
+    background-color: rgb(241, 204, 207);
+    width: 227px;
+    translate: none;
+    rotate: none;
+    scale: none;
+    opacity: 1;
+    transform: translate(0px, 0px);
+    margin-right: 15px;
+    height: 20rem;
+}
