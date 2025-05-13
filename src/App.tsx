@@ -92,7 +92,7 @@ function CarouselFeature({carouselDetails,productDeck}){
 
   const dragX = useMotionValue(0)
 
-  const DRAG_BUFFER = 90
+  const DRAG_BUFFER = 50
 
   function onDragStart(){
     setDragging(true)
@@ -105,19 +105,14 @@ function CarouselFeature({carouselDetails,productDeck}){
 
     const x = dragX.get()
 
-    console.log(x)
-
-    if(x <= -DRAG_BUFFER && imgIndex < (productDeck.length)-1){
-      setImageIndex((pv) => pv + 1) 
-      console.log('+1')
-      console.log(imgIndex)
-      console.log((productDeck.length)-1)
-    } else if(x >= DRAG_BUFFER && imgIndex > 0){
-      setImageIndex((pv) => pv - 1)
-      console.log('-1')
-      console.log(imgIndex)
-      console.log((productDeck.length)-1)
+    // Calculate how far the user dragged, and decide whether to move to the next or previous item
+    if (x <= -DRAG_BUFFER * 2 && imgIndex < productDeck.length - 1) {
+      setImageIndex((prevIndex) => prevIndex + 2); // Move 2 items forward
+    } else if (x >= DRAG_BUFFER * 2 && imgIndex > 0) {
+      setImageIndex((prevIndex) => prevIndex - 2); // Move 2 items backward
     }
+    // Reset drag position to align with the current item
+    dragX.set(-imgIndex * 300); // Assuming each item is 300px wid
   }
 
   return (
@@ -137,6 +132,7 @@ function CarouselFeature({carouselDetails,productDeck}){
         <div className='carouselReel'>
           <div className={`carouselReelScreen ${carouselDetails.direction}`}>
             <motion.div
+            dragElastic={1}
               drag='x' 
               dragConstraints={{
                 left: 0,
@@ -148,6 +144,14 @@ function CarouselFeature({carouselDetails,productDeck}){
               animate={{
                 translateX: `-${imgIndex * 50}%`
               }}
+              transition={{
+                type: 'tween',
+                stiffness: 0,
+                damping: 0,
+                ease: "easeInOut",
+                duration: 0.5,  // Slightly slower for smoother snappin
+                bounce: 0
+              }}
 
               onDragStart={onDragStart}
               onDragEnd={onDragEnd}
@@ -156,19 +160,20 @@ function CarouselFeature({carouselDetails,productDeck}){
 
               {productDeck.map((item, index) => (
                 <motion.div
-                
-                  // animate={{
-                  //   scale: dragging ? '0.5' : '1',
-                   
-                  // }}
-
-                  style={{
+                  animate={{
                     transform: dragging 
                       ? "translate3d(0px, 0px, 0px) rotate(3deg) scale(0.9, 0.9)"
                       : "translate3d(0px, 0px, 0px) rotate(0deg) scale(1, 1)"
                   }}
-
-                  className='card' key={index}
+                  transition={{
+                    type: 'tween',
+                    stiffness: 300,
+                    damping: 20,
+                    ease: "easeInOut",
+                    duration: 1
+                  }}
+                  className="card"
+                  key={index}
                 >
                   <div className='cardHead'>
                     <p className='cardHeadTitle'>{item.title}</p>
