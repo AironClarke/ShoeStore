@@ -101,7 +101,7 @@ function CarouselFeature({carouselDetails,productDeck}){
         </div>
         <div className='carouselReel'>
           <div className={`carouselReelScreen ${carouselDetails.direction}`}>
-            <div className='swiper'>
+            <div className={`swiper ${carouselDetails.direction}`}>
 
               {productDeck.map((item, index) => (
                 <div className='card' key={index}>
