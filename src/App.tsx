@@ -1,5 +1,6 @@
 import './normalise.css'
 import './App.css'
+import { Parallax } from 'react-parallax';
 
 function App() {
 
@@ -8,7 +9,9 @@ function App() {
       <section>
         <div className='carouselFeature'>
           <div className='carouselFeatureImg parallax'>
-            <img src="/Images/explore-1.jpg" alt="freature image" />
+            <Parallax blur={0} bgImage="/Images/explore-1.jpg" bgImageAlt="freature image" strength={300} className='lex'>
+            </Parallax>
+            {/* <img src="/Images/explore-1.jpg" alt="freature image" /> */}
           </div>
           <div className='carouselContent'>
             <div className='carouselContentHeader'>
@@ -102,8 +105,10 @@ function App() {
 
         <div className='carouselFeature reverse'>
           <div className='carouselFeatureImg parallax'>
-              <img src="/Images/explore-1.jpg" alt="freature image" />
-            </div>
+            <Parallax blur={0} bgImage="/Images/explore-1.jpg" bgImageAlt="freature image" strength={300} className='lex'>
+            </Parallax>
+              {/* <img src="/Images/explore-1.jpg" alt="freature image" /> */}
+          </div>
             <div className='carouselContent'>
               <div className='carouselContentHeader'>
                 <h3 className='carouselH3'>Our Products</h3>
