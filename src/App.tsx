@@ -107,16 +107,16 @@ function CarouselFeature({carouselDetails,productDeck}){
 
     console.log(x)
 
-    if(x <= -DRAG_BUFFER && imgIndex < (productDeck.length/2)-1){
+    if(x <= -DRAG_BUFFER && imgIndex < (productDeck.length)-1){
       setImageIndex((pv) => pv + 1) 
       console.log('+1')
       console.log(imgIndex)
-      console.log((productDeck.length/2)-1)
+      console.log((productDeck.length)-1)
     } else if(x >= DRAG_BUFFER && imgIndex > 0){
       setImageIndex((pv) => pv - 1)
       console.log('-1')
       console.log(imgIndex)
-      console.log((productDeck.length/2)-1)
+      console.log((productDeck.length)-1)
     }
   }
 
@@ -143,18 +143,33 @@ function CarouselFeature({carouselDetails,productDeck}){
                 right: 0
               }}
               style={{
-                x: dragX
+                x: dragX,
               }}
               animate={{
-                translateX: `-${imgIndex * 100}%`
+                translateX: `-${imgIndex * 50}%`
               }}
+
               onDragStart={onDragStart}
               onDragEnd={onDragEnd}
               className={`swiper ${carouselDetails.direction}`}
             >
 
               {productDeck.map((item, index) => (
-                <div className='card' key={index}>
+                <motion.div
+                
+                  // animate={{
+                  //   scale: dragging ? '0.5' : '1',
+                   
+                  // }}
+
+                  style={{
+                    transform: dragging 
+                      ? "translate3d(0px, 0px, 0px) rotate(3deg) scale(0.9, 0.9)"
+                      : "translate3d(0px, 0px, 0px) rotate(0deg) scale(1, 1)"
+                  }}
+
+                  className='card' key={index}
+                >
                   <div className='cardHead'>
                     <p className='cardHeadTitle'>{item.title}</p>
                     <div className='cardCircle'></div>
@@ -170,7 +185,7 @@ function CarouselFeature({carouselDetails,productDeck}){
                       <p className='cardPrice'>{item.price}</p>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
 
             </motion.div>
