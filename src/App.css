@@ -13,7 +13,7 @@
 }
 
 .carouselFeatureImg{
-    width: 50vw;
+    width: 50%;
     overflow: hidden;
     height: 100%
 }
@@ -175,9 +175,3 @@
 
 
 /* fghj */
-.swiper{
-    width: 100%;
-}
-.card{
-    flex-shrink: 0;
-}
