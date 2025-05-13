@@ -1,6 +1,8 @@
 import './normalise.css'
 import './App.css'
 import { Parallax } from 'react-parallax';
+import { motion, useMotionValue } from 'framer-motion';
+import { useState } from 'react';
 
 const productDeckOne = [
   {
@@ -85,6 +87,39 @@ const carouselDetailsTwo = {
 }
 
 function CarouselFeature({carouselDetails,productDeck}){
+  const [imgIndex, setImageIndex] = useState(0)
+  const [dragging, setDragging] = useState(false)
+
+  const dragX = useMotionValue(0)
+
+  const DRAG_BUFFER = 90
+
+  function onDragStart(){
+    setDragging(true)
+    console.log('start')
+  }
+
+  function onDragEnd(){
+    setDragging(false)
+    console.log('end')
+
+    const x = dragX.get()
+
+    console.log(x)
+
+    if(x <= -DRAG_BUFFER && imgIndex < (productDeck.length/2)-1){
+      setImageIndex((pv) => pv + 1) 
+      console.log('+1')
+      console.log(imgIndex)
+      console.log((productDeck.length/2)-1)
+    } else if(x >= DRAG_BUFFER && imgIndex > 0){
+      setImageIndex((pv) => pv - 1)
+      console.log('-1')
+      console.log(imgIndex)
+      console.log((productDeck.length/2)-1)
+    }
+  }
+
   return (
     <div className={`carouselFeature ${carouselDetails.direction}`}>
       <div className='carouselFeatureImg parallax'>
@@ -101,7 +136,22 @@ function CarouselFeature({carouselDetails,productDeck}){
         </div>
         <div className='carouselReel'>
           <div className={`carouselReelScreen ${carouselDetails.direction}`}>
-            <div className={`swiper ${carouselDetails.direction}`}>
+            <motion.div
+              drag='x' 
+              dragConstraints={{
+                left: 0,
+                right: 0
+              }}
+              style={{
+                x: dragX
+              }}
+              animate={{
+                translateX: `-${imgIndex * 100}%`
+              }}
+              onDragStart={onDragStart}
+              onDragEnd={onDragEnd}
+              className={`swiper ${carouselDetails.direction}`}
+            >
 
               {productDeck.map((item, index) => (
                 <div className='card' key={index}>
@@ -123,7 +173,7 @@ function CarouselFeature({carouselDetails,productDeck}){
                 </div>
               ))}
 
-            </div>
+            </motion.div>
           </div>
         </div>
       </div>

@@ -67,6 +67,7 @@
 .swiper{
     display: flex;
     height: 100%;
+    width: 100%;
     position: relative;
     transition-property: transform;
     z-index: 1;
@@ -77,7 +78,8 @@
 
 .card{
     background-color: rgb(241, 204, 207);
-    width: 300px;
+    width: 49%;
+    flex-shrink: 0;
     translate: none;
     rotate: none;
     scale: none;
