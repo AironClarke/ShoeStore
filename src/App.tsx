@@ -125,7 +125,7 @@ function CarouselFeature({carouselDetails,productDeck}){
           <div className={`carouselReelScreen ${carouselDetails.direction}`}>
             <motion.div
             dragMomentum={false}
-            dragElastic={1}
+            dragElastic={0.3}
               drag='x' 
               dragConstraints={{
                 left: 0,
