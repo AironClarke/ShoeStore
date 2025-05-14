@@ -98,14 +98,9 @@ function CarouselFeature({carouselDetails,productDeck}){
     const x = dragX.get()
 
     // Calculate how far the user dragged, and decide whether to move to the next or previous item
-    if (x <= -DRAG_BUFFER -300 && imgIndex < productDeck.length - 2) {
-      setImageIndex((prevIndex) => prevIndex + 2); // Move 2 items forward
-    } else if (x >= DRAG_BUFFER * 2 + 300 && imgIndex > 0) {
-      setImageIndex((prevIndex) => prevIndex - 2); // Move 2 items backward
-    }
-    else if (x <= -DRAG_BUFFER  && imgIndex < productDeck.length - 1) {
+    if (x <= -DRAG_BUFFER  && imgIndex < productDeck.length - 1) {
       setImageIndex((prevIndex) => prevIndex + 1); // Move 2 items forward
-    } else if (x >= DRAG_BUFFER * 2 && imgIndex > 0) {
+    } else if (x >= DRAG_BUFFER  && imgIndex > 0) {
       setImageIndex((prevIndex) => prevIndex - 1); // Move 2 items backward
     }
     // Reset drag position to align with the current item
