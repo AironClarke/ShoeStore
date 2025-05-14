@@ -98,7 +98,7 @@ function CarouselFeature({carouselDetails,productDeck}){
     const x = dragX.get()
 
     // Calculate how far the user dragged, and decide whether to move to the next or previous item
-    if (x <= -DRAG_BUFFER  && imgIndex < productDeck.length - 1) {
+    if (x <= -DRAG_BUFFER  && imgIndex < ((productDeck.length /2)- 1)) {
       setImageIndex((prevIndex) => prevIndex + 1); // Move 2 items forward
     } else if (x >= DRAG_BUFFER  && imgIndex > 0) {
       setImageIndex((prevIndex) => prevIndex - 1); // Move 2 items backward
@@ -124,8 +124,8 @@ function CarouselFeature({carouselDetails,productDeck}){
         <div className='carouselReel'>
           <div className={`carouselReelScreen ${carouselDetails.direction}`}>
             <motion.div
-            dragMomentum={false}
-            dragElastic={0.3}
+            dragMomentum={true}
+            dragElastic={0.33}
               drag='x' 
               dragConstraints={{
                 left: 0,
@@ -163,7 +163,7 @@ function CarouselFeature({carouselDetails,productDeck}){
                     stiffness: 300,
                     damping: 20,
                     ease: "easeInOut",
-                    duration: 1
+                    duration: 0.3
                   }}
                   className="card"
                   key={index}
