@@ -1,8 +1,8 @@
 import './normalise.css'
 import './App.css'
 import { Parallax } from 'react-parallax';
-import { motion, useMotionValue } from 'framer-motion';
-import { useState } from 'react';
+import { motion, useAnimation, useMotionValue } from 'framer-motion';
+import { useState, useEffect, useRef } from 'react';
 
 const productDeckOne = [
   {
@@ -83,17 +83,49 @@ function CarouselFeature({carouselDetails,productDeck}){
   const [dragging, setDragging] = useState(false)
 
   const dragX = useMotionValue(0)
+  const controls = useAnimation();
+
+  const boundary = useRef(null)
+  const [constraints, setConstraints] = useState({left: 0, right: 0}) 
 
   const DRAG_BUFFER = 50
+  const ITEM_WIDTH = 200; // Width of each item
+  const SNAP_THRESHOLD = ITEM_WIDTH / 2; // Adjust as needed
 
   function onDragStart(){
     setDragging(true)
     console.log('start')
+    console.log(constraints)
   }
+
+  const handleDragEnd = (event, info) => {
+    const { offset } = info;
+    const maxIndex = Math.floor(productDeck.length / 2) - 1;
+
+    if (offset.x <= -DRAG_BUFFER && imgIndex < maxIndex) {
+      setImageIndex((prev) => prev + 1);
+    } else if (offset.x >= DRAG_BUFFER && imgIndex > 0) {
+      setImageIndex((prev) => prev - 1);
+    }
+
+    // Calculate the new target position
+    const targetX = -imgIndex * ITEM_WIDTH;
+
+    // Animate to the snapped position
+    controls.start({
+      x: targetX,
+      transition: {
+        type: "tween",
+        ease: "easeInOut",
+        duration: 0.5,
+      },
+    });
+  };
 
   function onDragEnd(){
     setDragging(false)
     console.log('end')
+    console.log(constraints)
 
     const x = dragX.get()
 
@@ -106,6 +138,25 @@ function CarouselFeature({carouselDetails,productDeck}){
     // Reset drag position to align with the current item
     dragX.set(-imgIndex * 300); // Assuming each item is 300px wid
   }
+
+
+
+  useEffect(() => {
+    function updateConstraint(){
+      if(boundary.current){
+        const width = boundary.current.offsetWidth;
+        setConstraints({left: -width/2, right: width/2})
+      }
+    }
+
+    updateConstraint(); //why run the function before the adding event lister?
+    window.addEventListener("resize", updateConstraint);
+
+    return () => {
+      window.removeEventListener("resize", updateConstraint);
+    };
+
+  },[]) //how does it update with nothing here?
 
   return (
     <div className={`carouselFeature ${carouselDetails.direction}`}>
@@ -124,19 +175,17 @@ function CarouselFeature({carouselDetails,productDeck}){
         <div className='carouselReel'>
           <div className={`carouselReelScreen ${carouselDetails.direction}`}>
             <motion.div
+            ref={boundary}
             dragMomentum={true}
-            dragElastic={0.33}
+            dragElastic={0.3}
               drag='x' 
-              dragConstraints={{
-                left: 0,
-                right: 0
-              }}
-              style={{
-                x: dragX,
-              }}
-              animate={{
-                translateX: `-${imgIndex * 50}%`
-              }}
+              dragConstraints={constraints}
+              // style={{
+              //   x: dragX,
+              // }}
+              // animate={{
+              //   translateX: `-${imgIndex * 50}%`
+              // }}
               transition={{
                 type: 'tween',
                 stiffness: 0,
