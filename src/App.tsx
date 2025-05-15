@@ -174,7 +174,7 @@ function CarouselFeature({carouselDetails,productDeck}){
             ref={boundary}
             dragElastic={0.3}
               drag='x' 
-              dragConstraints={boundary}
+              dragConstraints={constraints}
               animate={controls}
               transition={{
                 type: 'tween',
