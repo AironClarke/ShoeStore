@@ -121,6 +121,7 @@ function CarouselFeature({carouselDetails,productDeck}){
 
     setImageIndex(newIndex);
 
+
     // Calculate the new target position;
     const targetX = -newIndex * itemWidth;
 
@@ -145,6 +146,7 @@ function CarouselFeature({carouselDetails,productDeck}){
         const containerWidth = boundary.current.offsetWidth;
         const calculatedWidth = containerWidth * 0.49;
         setItemWidth(calculatedWidth);
+
       }
 
     }
@@ -188,7 +190,7 @@ function CarouselFeature({carouselDetails,productDeck}){
                 ease: "easeInOut",
                 duration: 0.5,  // Slightly slower for smoother snappin
               }}
-
+              
               onDragStart={onDragStart}
               onDragEnd={onDragEnd}
               className={`swiper ${carouselDetails.direction}`}
