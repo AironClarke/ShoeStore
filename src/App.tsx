@@ -88,7 +88,7 @@ function CarouselFeature({carouselDetails,productDeck}){
   const boundary = useRef(null)
   const [constraints, setConstraints] = useState({left: 0, right: 0}) 
 
-  const DRAG_BUFFER = 50
+  // const DRAG_BUFFER = 50
   const [itemWidth, setItemWidth] = useState(0)
   const SNAP_THRESHOLD = itemWidth / 2; // Adjust as needed
 
@@ -112,9 +112,9 @@ function CarouselFeature({carouselDetails,productDeck}){
     setDragging(false)
     const maxIndex = Math.floor(productDeck.length / 2) - 1;
 
-    if (offset.x <= -DRAG_BUFFER && imgIndex < maxIndex) {
+    if (offset.x <= -SNAP_THRESHOLD && imgIndex < maxIndex) {
       setImageIndex((prev) => prev + 1);
-    } else if (offset.x >= DRAG_BUFFER && imgIndex > 0) {
+    } else if (offset.x >= SNAP_THRESHOLD && imgIndex > 0) {
       setImageIndex((prev) => prev - 1);
     }
 
