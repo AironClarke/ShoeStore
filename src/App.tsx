@@ -82,15 +82,13 @@ function CarouselFeature({carouselDetails,productDeck}){
   const [imgIndex, setImageIndex] = useState(0)
   const [dragging, setDragging] = useState(false)
 
-  const dragX = useMotionValue(0)
   const controls = useAnimation();
 
   const boundary = useRef(null)
   const [constraints, setConstraints] = useState({left: 0, right: 0}) 
 
   // const DRAG_BUFFER = 50
-  const [itemWidth, setItemWidth] = useState(0)
-  const SNAP_THRESHOLD = itemWidth / 2; // Adjust as needed
+  const [itemWidth, setItemWidth] = useState(0) 
 
   useEffect(() => {
     if (boundary.current) {
@@ -99,7 +97,6 @@ function CarouselFeature({carouselDetails,productDeck}){
       setItemWidth(calculatedWidth);
     }
   }, [boundary]);
-
 
   function onDragStart(){
     setDragging(true)
@@ -110,16 +107,22 @@ function CarouselFeature({carouselDetails,productDeck}){
   const onDragEnd = (event, info) => {
     const { offset } = info;
     setDragging(false)
-    const maxIndex = Math.floor(productDeck.length / 2) - 1;
+    const maxIndex = Math.ceil(productDeck.length / 2) - 1;
+    const SNAP_THRESHOLD = itemWidth / 2; // Adjust as needed
+
+    let newIndex = imgIndex;
 
     if (offset.x <= -SNAP_THRESHOLD && imgIndex < maxIndex) {
-      setImageIndex((prev) => prev + 1);
-    } else if (offset.x >= SNAP_THRESHOLD && imgIndex > 0) {
-      setImageIndex((prev) => prev - 1);
+      newIndex = imgIndex + 1;
+    } 
+    else if (offset.x >= SNAP_THRESHOLD && imgIndex > 0) {
+      newIndex = imgIndex - 1;
     }
 
-    // Calculate the new target position
-    const targetX = -imgIndex * itemWidth;
+    setImageIndex(newIndex);
+
+    // Calculate the new target position;
+    const targetX = -newIndex * itemWidth;
 
     // Animate to the snapped position
     controls.start({
@@ -130,26 +133,8 @@ function CarouselFeature({carouselDetails,productDeck}){
         duration: 0.5,
       },
     });
+
   };
-
-  // function onDragEnd(){
-  //   setDragging(false)
-  //   console.log('end')
-  //   console.log(constraints)
-
-  //   const x = dragX.get()
-
-  //   // Calculate how far the user dragged, and decide whether to move to the next or previous item
-  //   if (x <= -DRAG_BUFFER  && imgIndex < ((productDeck.length /2)- 1)) {
-  //     setImageIndex((prevIndex) => prevIndex + 1); // Move 2 items forward
-  //   } else if (x >= DRAG_BUFFER  && imgIndex > 0) {
-  //     setImageIndex((prevIndex) => prevIndex - 1); // Move 2 items backward
-  //   }
-  //   // Reset drag position to align with the current item
-  //   dragX.set(-imgIndex * 300); // Assuming each item is 300px wid
-  // }
-
-
 
   useEffect(() => {
     function updateConstraint(){
@@ -185,17 +170,12 @@ function CarouselFeature({carouselDetails,productDeck}){
         <div className='carouselReel'>
           <div className={`carouselReelScreen ${carouselDetails.direction}`} ref={boundary}>
             <motion.div
+            dragMomentum={false}
             ref={boundary}
-            dragMomentum={true}
             dragElastic={0.3}
               drag='x' 
               dragConstraints={boundary}
-              style={{
-                x: dragX,
-              }}
-              animate={
-                controls
-              }
+              animate={controls}
               transition={{
                 type: 'tween',
                 stiffness: 0,
