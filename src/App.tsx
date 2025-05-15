@@ -89,8 +89,17 @@ function CarouselFeature({carouselDetails,productDeck}){
   const [constraints, setConstraints] = useState({left: 0, right: 0}) 
 
   const DRAG_BUFFER = 50
-  const ITEM_WIDTH = 200; // Width of each item
-  const SNAP_THRESHOLD = ITEM_WIDTH / 2; // Adjust as needed
+  const [itemWidth, setItemWidth] = useState(0)
+  const SNAP_THRESHOLD = itemWidth / 2; // Adjust as needed
+
+  useEffect(() => {
+    if (boundary.current) {
+      const containerWidth = boundary.current.offsetWidth;
+      const calculatedWidth = containerWidth * 0.49;
+      setItemWidth(calculatedWidth);
+    }
+  }, [boundary]);
+
 
   function onDragStart(){
     setDragging(true)
@@ -110,7 +119,7 @@ function CarouselFeature({carouselDetails,productDeck}){
     }
 
     // Calculate the new target position
-    const targetX = -imgIndex * ITEM_WIDTH;
+    const targetX = -imgIndex * itemWidth;
 
     // Animate to the snapped position
     controls.start({
@@ -174,26 +183,25 @@ function CarouselFeature({carouselDetails,productDeck}){
           <div className='circle'></div>
         </div>
         <div className='carouselReel'>
-          <div className={`carouselReelScreen ${carouselDetails.direction}`}>
+          <div className={`carouselReelScreen ${carouselDetails.direction}`} ref={boundary}>
             <motion.div
             ref={boundary}
             dragMomentum={true}
             dragElastic={0.3}
               drag='x' 
-              dragConstraints={constraints}
-              // style={{
-              //   x: dragX,
-              // }}
-              // animate={{
-              //   translateX: `-${imgIndex * 50}%`
-              // }}
+              dragConstraints={boundary}
+              style={{
+                x: dragX,
+              }}
+              animate={
+                controls
+              }
               transition={{
                 type: 'tween',
                 stiffness: 0,
                 damping: 0,
                 ease: "easeInOut",
                 duration: 0.5,  // Slightly slower for smoother snappin
-                bounce: 0
               }}
 
               onDragStart={onDragStart}
@@ -217,6 +225,7 @@ function CarouselFeature({carouselDetails,productDeck}){
                   }}
                   className="card"
                   key={index}
+                  style={{ width: itemWidth }}
                 >
                   <div className='cardHead'>
                     <p className='cardHeadTitle'>{item.title}</p>
