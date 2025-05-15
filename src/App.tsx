@@ -98,8 +98,9 @@ function CarouselFeature({carouselDetails,productDeck}){
     console.log(constraints)
   }
 
-  const handleDragEnd = (event, info) => {
+  const onDragEnd = (event, info) => {
     const { offset } = info;
+    setDragging(false)
     const maxIndex = Math.floor(productDeck.length / 2) - 1;
 
     if (offset.x <= -DRAG_BUFFER && imgIndex < maxIndex) {
@@ -122,22 +123,22 @@ function CarouselFeature({carouselDetails,productDeck}){
     });
   };
 
-  function onDragEnd(){
-    setDragging(false)
-    console.log('end')
-    console.log(constraints)
+  // function onDragEnd(){
+  //   setDragging(false)
+  //   console.log('end')
+  //   console.log(constraints)
 
-    const x = dragX.get()
+  //   const x = dragX.get()
 
-    // Calculate how far the user dragged, and decide whether to move to the next or previous item
-    if (x <= -DRAG_BUFFER  && imgIndex < ((productDeck.length /2)- 1)) {
-      setImageIndex((prevIndex) => prevIndex + 1); // Move 2 items forward
-    } else if (x >= DRAG_BUFFER  && imgIndex > 0) {
-      setImageIndex((prevIndex) => prevIndex - 1); // Move 2 items backward
-    }
-    // Reset drag position to align with the current item
-    dragX.set(-imgIndex * 300); // Assuming each item is 300px wid
-  }
+  //   // Calculate how far the user dragged, and decide whether to move to the next or previous item
+  //   if (x <= -DRAG_BUFFER  && imgIndex < ((productDeck.length /2)- 1)) {
+  //     setImageIndex((prevIndex) => prevIndex + 1); // Move 2 items forward
+  //   } else if (x >= DRAG_BUFFER  && imgIndex > 0) {
+  //     setImageIndex((prevIndex) => prevIndex - 1); // Move 2 items backward
+  //   }
+  //   // Reset drag position to align with the current item
+  //   dragX.set(-imgIndex * 300); // Assuming each item is 300px wid
+  // }
 
 
 
