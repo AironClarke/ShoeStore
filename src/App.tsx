@@ -141,7 +141,12 @@ function CarouselFeature({carouselDetails,productDeck}){
       if(boundary.current){
         const width = boundary.current.offsetWidth;
         setConstraints({left: -width/2, right: width/2})
+        console.log('constraints changed')
+        const containerWidth = boundary.current.offsetWidth;
+        const calculatedWidth = containerWidth * 0.49;
+        setItemWidth(calculatedWidth);
       }
+
     }
 
     updateConstraint(); //why run the function before the adding event lister?
@@ -205,7 +210,7 @@ function CarouselFeature({carouselDetails,productDeck}){
                   }}
                   className="card"
                   key={index}
-                  style={{ width: itemWidth }}
+                  style={{ width: '48%' }}
                 >
                   <div className='cardHead'>
                     <p className='cardHeadTitle'>{item.title}</p>
