@@ -143,9 +143,21 @@ function CarouselFeature({carouselDetails,productDeck}){
         const width = boundary.current.offsetWidth;
         setConstraints({left: -width/2, right: width/2})
         console.log('constraints changed')
+
         const containerWidth = boundary.current.offsetWidth;
         const calculatedWidth = containerWidth * 0.49;
         setItemWidth(calculatedWidth);
+
+              // Adjust snapping position based on new width
+              const newTargetX = -imgIndex * calculatedWidth;
+      controls.start({
+        x: newTargetX,
+        transition: {
+          type: "tween",
+          ease: "easeInOut",
+          duration: 0,
+        },
+      });
 
       }
 
@@ -158,7 +170,7 @@ function CarouselFeature({carouselDetails,productDeck}){
       window.removeEventListener("resize", updateConstraint);
     };
 
-  },[]) //how does it update with nothing here?
+  },[imgIndex, productDeck.length]) //how does it update with nothing here?
 
   return (
     <div className={`carouselFeature ${carouselDetails.direction}`}>
