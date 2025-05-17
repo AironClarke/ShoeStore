@@ -90,14 +90,6 @@ function CarouselFeature({carouselDetails,productDeck}){
   // const DRAG_BUFFER = 50
   const [itemWidth, setItemWidth] = useState(0) 
 
-  useEffect(() => {
-    if (boundary.current) {
-      const containerWidth = boundary.current.offsetWidth;
-      const calculatedWidth = containerWidth * 0.49;
-      setItemWidth(calculatedWidth);
-    }
-  }, [boundary]);
-
   function onDragStart(){
     setDragging(true)
     console.log('start')
@@ -108,7 +100,7 @@ function CarouselFeature({carouselDetails,productDeck}){
     const { offset } = info;
     setDragging(false)
     const maxIndex = Math.ceil(productDeck.length / 2) - 1;
-    const SNAP_THRESHOLD = itemWidth / 2; // Adjust as needed
+    const SNAP_THRESHOLD =  itemWidth / 2; // Adjust as needed
 
     let newIndex = imgIndex;
 
@@ -149,7 +141,7 @@ function CarouselFeature({carouselDetails,productDeck}){
         setItemWidth(calculatedWidth);
 
               // Adjust snapping position based on new width
-              const newTargetX = -imgIndex * calculatedWidth;
+              const newTargetX = -imgIndex * calculatedWidth
       controls.start({
         x: newTargetX,
         transition: {
